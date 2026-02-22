@@ -3,440 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afya - Instant Medical Guidance When There Is No Doctor</title>
-    <meta name="description" content="Afya provides AI-powered medical assessment and emergency guidance to communities without immediate healthcare access. Pan-African health technology for everyone, everywhere.">
-    <meta name="keywords" content="emergency medical care, symptom checker, African healthcare, telemedicine, medical AI">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="Afya - Health for Everyone, Everywhere">
-    <meta property="og:description" content="Instant medical guidance when doctors aren't available. AI-powered emergency care for underserved communities.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://getafya.com">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏥</text></svg>">
-    
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="ProxiHealth - Emergency medical guidance when doctors aren't nearby. AI-powered first aid for Africa.">
+    <title>ProxiHealth - Emergency Medical Guidance</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Simple Header -->
-    <header class="header">
+    <!-- Disclaimer Modal (shows on first visit) -->
+    <div id="disclaimerModal" class="modal">
+        <div class="modal-content">
+            <h2>Before You Start</h2>
+            <p>ProxiHealth provides <strong>educational emergency guidance</strong> based on WHO protocols and medical best practices.</p>
+            <div class="disclaimer-box">
+                <p><strong>This tool does NOT replace professional medical care.</strong></p>
+                <ul>
+                    <li>Always call emergency services (112) for life-threatening situations</li>
+                    <li>Seek professional medical attention when possible</li>
+                    <li>This guidance is for situations where immediate help is unavailable</li>
+                </ul>
+            </div>
+            <button id="disclaimerAccept" class="btn-primary">I Understand</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
         <div class="container">
-            <div class="header-content">
+            <div class="nav">
                 <div class="logo">
                     <span class="logo-icon">🏥</span>
-                    <div class="logo-text-group">
-                        <span class="logo-text">Afya</span>
-                        <span class="logo-subtext">Health for everyone, everywhere</span>
-                    </div>
+                    <span class="logo-text">ProxiHealth</span>
                 </div>
-                <nav class="nav">
-                    <a href="#how-it-works" class="nav-link">How It Works</a>
-                    <a href="#about" class="nav-link">About</a>
-                    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-                        <span class="theme-icon">🌙</span>
-                    </button>
+                <nav>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="#about">About</a>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero Section (Above the Fold) -->
     <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">🌍 Pan-African Health Technology</div>
-                <h1 class="hero-title">Medical emergency?<br>Get instant guidance.</h1>
-                <p class="hero-subtitle">AI-powered medical assessment in 30 seconds when doctors aren't available. Evidence-based care instructions that could save a life.</p>
-                
-                <div class="hero-cta">
-                    <button class="btn-primary" onclick="startAssessment()">
-                        <span class="btn-text">Start Emergency Assessment</span>
-                        <span class="btn-icon">→</span>
-                    </button>
-                    <p class="cta-note">Free • No login required • Works offline • Available in 22+ languages</p>
-                </div>
+            <h1>Medical emergency?<br>Get instant guidance.</h1>
+            <p class="hero-subtitle">AI-powered medical assessment in 30 seconds when doctors aren't available. Evidence-based care instructions that could save a life.</p>
 
-                <div class="hero-secondary">
-                    <a href="#healthcare" class="secondary-link">Find nearby healthcare</a>
-                    <span class="divider">•</span>
-                    <a href="#resources" class="secondary-link">Browse resources</a>
-                </div>
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="symptomSearch" 
+                    class="search-input" 
+                    placeholder="Search symptoms (e.g., snake bite, severe bleeding, fever)"
+                    autocomplete="off"
+                >
+                <button id="searchBtn" class="search-btn">Search</button>
+            </div>
+
+            <div class="divider">
+                <span>or choose emergency type</span>
+            </div>
+
+            <!-- Emergency Buttons -->
+            <div class="emergency-grid">
+                <button class="emergency-card critical" id="criticalBtn">
+                    <div class="card-icon critical-icon"></div>
+                    <h3>Critical Emergency</h3>
+                    <p>Severe bleeding, not breathing, unconscious, severe chest pain</p>
+                </button>
+
+                <button class="emergency-card non-urgent" id="nonUrgentBtn">
+                    <div class="card-icon non-urgent-icon"></div>
+                    <h3>Non-Urgent Symptoms</h3>
+                    <p>Fever, headache, rash, stomach pain, minor injuries</p>
+                </button>
             </div>
 
             <!-- Trust Indicators -->
-            <div class="trust-bar">
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    <span class="trust-text">WHO Guidelines</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    <span class="trust-text">Medical Review Board</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    <span class="trust-text">85% Diagnostic Accuracy</span>
-                </div>
-                <div class="trust-item">
-                    <span class="trust-icon">✓</span>
-                    <span class="trust-text">500M+ People Served</span>
-                </div>
+            <div class="trust-indicators">
+                <span>✓ Free</span>
+                <span>✓ No login required</span>
+                <span>✓ Works offline</span>
+                <span>✓ Available in 22+ languages</span>
             </div>
         </div>
     </section>
 
-    <!-- How It Works Section -->
-    <section class="how-it-works" id="how-it-works">
+    <!-- How It Works (Below the Fold) -->
+    <section id="how-it-works" class="how-section">
         <div class="container">
-            <h2 class="section-title">How Afya Works</h2>
-            <p class="section-subtitle">Three simple steps from symptoms to action</p>
-
-            <div class="steps">
+            <h2>How ProxiHealth Works</h2>
+            <div class="steps-grid">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <div class="step-icon">🗣️</div>
-                    <h3 class="step-title">Describe</h3>
-                    <p class="step-description">Tell us your symptoms using voice, text, or by selecting from common conditions. Available in your local language.</p>
+                    <h3>Describe Symptoms</h3>
+                    <p>Tell us what's wrong in simple terms or select from common emergencies</p>
                 </div>
-
-                <div class="step-arrow">→</div>
-
                 <div class="step">
                     <div class="step-number">2</div>
-                    <div class="step-icon">🤖</div>
-                    <h3 class="step-title">Assess</h3>
-                    <p class="step-description">AI analyzes your symptoms against medical databases and regional health data across Africa.</p>
+                    <h3>AI Analysis</h3>
+                    <p>Our medical AI evaluates severity and identifies appropriate first aid</p>
                 </div>
-
-                <div class="step-arrow">→</div>
-
                 <div class="step">
                     <div class="step-number">3</div>
-                    <div class="step-icon">📋</div>
-                    <h3 class="step-title">Act</h3>
-                    <p class="step-description">Receive immediate care instructions, first aid steps, and guidance on when to seek emergency help.</p>
+                    <h3>Get Action Plan</h3>
+                    <p>Receive step-by-step instructions and know when to seek professional help</p>
                 </div>
             </div>
 
-            <div class="how-cta">
-                <button class="btn-secondary" onclick="startAssessment()">Try Afya now</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Social Proof Section -->
-    <section class="testimonial">
-        <div class="container">
-            <div class="testimonial-content">
-                <div class="quote-mark">"</div>
-                <blockquote class="testimonial-text">
-                    Afya helped me know what to do when my daughter had severe fever at 2 AM. We were three hours from the nearest clinic. The immediate guidance gave us confidence and likely saved her life.
-                </blockquote>
-                <div class="testimonial-author">
-                    <div class="author-avatar">A</div>
-                    <div class="author-info">
-                        <p class="author-name">Amina O.</p>
-                        <p class="author-location">Lagos, Nigeria 🇳🇬</p>
-                    </div>
+            <!-- Credibility Badges -->
+            <div class="badges">
+                <div class="badge">
+                    <span class="badge-icon">✓</span>
+                    <span>WHO Guidelines</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">✓</span>
+                    <span>Medical Review Board</span>
+                </div>
+                <div class="badge">
+                    <span class="badge-icon">✓</span>
+                    <span>85% Diagnostic Accuracy</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats">
+    <!-- About Section -->
+    <section id="about" class="about-section">
         <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">500M+</div>
-                    <div class="stat-label">Africans without healthcare access</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">15+</div>
-                    <div class="stat-label">Countries served</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">30 sec</div>
-                    <div class="stat-label">Average assessment time</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">4.9★</div>
-                    <div class="stat-label">Healthcare worker rating</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Use Cases Section -->
-    <section class="use-cases">
-        <div class="container">
-            <h2 class="section-title">When to use Afya</h2>
-            
-            <div class="use-cases-grid">
-                <div class="use-case-card">
-                    <div class="use-case-icon">🌙</div>
-                    <h3 class="use-case-title">After-hours emergencies</h3>
-                    <p class="use-case-description">When clinics are closed and symptoms appear suddenly at night or on weekends</p>
-                </div>
-                
-                <div class="use-case-card">
-                    <div class="use-case-icon">🏔️</div>
-                    <h3 class="use-case-title">Remote locations</h3>
-                    <p class="use-case-description">In rural areas far from medical facilities where help is hours away</p>
-                </div>
-                
-                <div class="use-case-card">
-                    <div class="use-case-icon">🌍</div>
-                    <h3 class="use-case-title">While traveling</h3>
-                    <p class="use-case-description">In unfamiliar places with unknown healthcare systems across Africa</p>
-                </div>
-                
-                <div class="use-case-card">
-                    <div class="use-case-icon">⚡</div>
-                    <h3 class="use-case-title">Uncertain severity</h3>
-                    <p class="use-case-description">When you need to know: seek emergency care now or wait until morning?</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mission Section (Pan-African) -->
-    <section class="mission-section">
-        <div class="container">
-            <div class="mission-content">
-                <h2 class="mission-title">Built for Africa, by Africa</h2>
-                <p class="mission-text">
-                    Afya means "health" in Swahili - spoken by over 200 million people across East Africa. But our mission extends far beyond one region. 
-                    We're building Pan-African health technology that bridges the healthcare gaps affecting 500 million people from Lagos to Nairobi, from Accra to Kampala.
-                </p>
-                <p class="mission-text">
-                    Because healthcare shouldn't depend on your location, your language, or your access to doctors. 
-                    Every family deserves immediate medical guidance when emergencies strike.
-                </p>
-                <div class="mission-stats">
-                    <div class="mission-stat">
-                        <strong>🌍 Pan-African</strong>
-                        <span>15+ countries, growing daily</span>
-                    </div>
-                    <div class="mission-stat">
-                        <strong>🗣️ Multilingual</strong>
-                        <span>22+ African languages supported</span>
-                    </div>
-                    <div class="mission-stat">
-                        <strong>📱 Mobile-First</strong>
-                        <span>Built for African connectivity</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Every second counts in a medical emergency</h2>
-                <p class="cta-subtitle">Get the guidance you need, when you need it most. Free, instant, potentially life-saving.</p>
-                <button class="btn-primary" onclick="startAssessment()">
-                    <span class="btn-text">Start Assessment Now</span>
-                    <span class="btn-icon">→</span>
-                </button>
-            </div>
+            <h2>Built for Africa</h2>
+            <p>ProxiHealth brings emergency medical guidance to communities where healthcare access is limited. Inspired by "Where There Is No Doctor," we're using AI to democratize life-saving knowledge across the continent.</p>
+            <p class="about-location">🌍 Pan-African Health Technology • Starting in Nigeria</p>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-main">
-                    <div class="footer-brand">
-                        <div class="footer-logo">
-                            <span class="logo-icon">🏥</span>
-                            <div class="logo-text-group">
-                                <span class="logo-text">Afya</span>
-                                <span class="footer-tagline">Health for everyone, everywhere</span>
-                            </div>
-                        </div>
-                        <p class="footer-mission">Pan-African health technology bridging healthcare gaps across the continent. From Nigeria to Kenya, from Ghana to Uganda - instant medical guidance when doctors aren't available.</p>
-                    </div>
-
-                    <div class="footer-links">
-                        <div class="footer-column">
-                            <h4 class="footer-heading">Emergency</h4>
-                            <ul class="footer-list">
-                                <li><a href="#assessment" class="footer-link">Start Assessment</a></li>
-                                <li><a href="#first-aid" class="footer-link">First Aid Guide</a></li>
-                                <li><a href="#emergency-numbers" class="footer-link">Emergency Numbers</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="footer-column">
-                            <h4 class="footer-heading">Healthcare</h4>
-                            <ul class="footer-list">
-                                <li><a href="#find-care" class="footer-link">Find Care</a></li>
-                                <li><a href="#telemedicine" class="footer-link">Telemedicine</a></li>
-                                <li><a href="#providers" class="footer-link">For Providers</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="footer-column">
-                            <h4 class="footer-heading">Company</h4>
-                            <ul class="footer-list">
-                                <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
-                                <li><a href="#about" class="footer-link">About Afya</a></li>
-                                <li><a href="#" onclick="showFounderStory(event)" class="footer-link">Founder Story</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="footer-column">
-                            <h4 class="footer-heading">Legal</h4>
-                            <ul class="footer-list">
-                                <li><a href="#privacy" class="footer-link">Privacy Policy</a></li>
-                                <li><a href="#terms" class="footer-link">Terms of Use</a></li>
-                                <li><a href="#disclaimer" class="footer-link">Medical Disclaimer</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer-bottom">
-                    <div class="footer-credits">
-                        <p class="founder-info">
-                            <strong>Founded by Louis Nkan</strong> 🇳🇬 • Healthcare Technology Innovator<br>
-                            <a href="mailto:louisnkan2002@gmail.com" class="email-link">📧 louisnkan2002@gmail.com</a> • 
-                            <a href="mailto:founder@getafya.com" class="email-link">founder@getafya.com</a>
-                        </p>
-                    </div>
-                    
-                    <div class="footer-legal-text">
-                        <p>&copy; 2025 Afya Health Technologies. For educational purposes only. Not a substitute for professional medical advice, diagnosis, or treatment.</p>
-                    </div>
-
-                    <div class="footer-badges">
-                        <span class="badge">🔒 HIPAA Compliant</span>
-                        <span class="badge">✓ Medical Board Approved</span>
-                        <span class="badge">🌐 WHO Guidelines</span>
-                        <span class="badge">🌍 Pan-African Platform</span>
-                    </div>
-                </div>
-            </div>
+            <p class="footer-disclaimer">⚠️ ProxiHealth is an educational tool, not a substitute for professional medical diagnosis or treatment. Always seek professional medical care when available.</p>
+            <p class="footer-copy">&copy; 2026 ProxiHealth. Emergency care guidance for everyone, everywhere.</p>
         </div>
     </footer>
 
-    <!-- Assessment Overlay -->
-    <div class="assessment-overlay hidden" id="assessmentOverlay">
-        <div class="assessment-container">
-            <div class="assessment-header">
-                <h2>Afya Emergency Assessment</h2>
-                <button class="close-btn" onclick="closeAssessment()">✕</button>
-            </div>
-            <div class="assessment-body">
-                <div class="assessment-step active" id="symptomStep">
-                    <h3>What symptoms are you experiencing?</h3>
-                    <p class="step-instruction">Select all that apply:</p>
-                    
-                    <div class="symptom-grid">
-                        <button class="symptom-btn" data-symptom="fever" onclick="toggleSymptom(this)">
-                            <span class="symptom-icon">🌡️</span>
-                            <span class="symptom-name">Fever</span>
-                        </button>
-                        <button class="symptom-btn" data-symptom="headache" onclick="toggleSymptom(this)">
-                            <span class="symptom-icon">🤕</span>
-                            <span class="symptom-name">Headache</span>
-                        </button>
-                        <button class="symptom-btn" data-symptom="nausea" onclick="toggleSymptom(this)">
-                            <span class="symptom-icon">🤢</span>
-                            <span class="symptom-name">Nausea</span>
-                        </button>
-                        <button class="symptom-btn" data-symptom="chest-pain" onclick="toggleSymptom(this)">
-                            <span class="symptom-icon">💔</span>
-                            <span class="symptom-name">Chest Pain</span>
-                        </button>
-                        <button class="symptom-btn" data-symptom="breathing" onclick="toggleSymptom(this)">
-                            <span class="symptom-icon">🫁</span>
-                            <span class="symptom-name">Breathing Issues</span>
-                        </button>
-                        <button class="symptom-btn" data-symptom="abdominal" onclick="toggleSymptom(this)">
-                            <span class="symptom-icon">🤰</span>
-                            <span class="symptom-name">Stomach Pain</span>
-                        </button>
-                    </div>
-
-                    <div class="assessment-actions">
-                        <button class="btn-primary" onclick="proceedToSeverity()" id="continueBtn" disabled>
-                            <span class="btn-text">Continue</span>
-                            <span class="btn-icon">→</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Founder Story Modal -->
-    <div class="modal-overlay hidden" id="founderModal">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h2>The Journey to Afya</h2>
-                <button class="close-btn" onclick="closeFounderModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="founder-story">
-                    <div class="founder-intro">
-                        <div class="founder-avatar-large">LN</div>
-                        <h3>Louis Nkan</h3>
-                        <p class="founder-title">Founder & CEO, Afya Health Technologies</p>
-                        <p class="founder-location">🇳🇬 Lagos, Nigeria</p>
-                    </div>
-                    
-                    <div class="story-content">
-                        <h4>Why Afya? Why Now?</h4>
-                        
-                        <p>Growing up in Nigeria, I watched families face medical emergencies with nowhere to turn—not because healthcare didn't exist, but because it was too far, too expensive, or discovered too late.</p>
-                        
-                        <p>I remember a neighbor's child suffering from severe fever. The family spent hours searching Google, finding conflicting advice, while the child's condition worsened. By the time they reached a clinic hours away, what could have been managed at home had become critical.</p>
-                        
-                        <p>That moment changed everything for me. <strong>We have smartphones everywhere across Africa, but medical knowledge nowhere when it matters most.</strong></p>
-                        
-                        <h4>Why "Afya"? Why Swahili?</h4>
-                        
-                        <p>I'm Nigerian, but this problem doesn't respect borders. Healthcare gaps affect 500 million people from Lagos to Nairobi, from Accra to Kampala.</p>
-                        
-                        <p>Swahili is Africa's most widely spoken language - over 200 million people across East Africa understand it. "Afya" means health. By choosing this name, I'm signaling: <strong>this isn't just a Nigerian solution. It's a Pan-African platform for Pan-African problems.</strong></p>
-                        
-                        <p>We're not building for one country. We're building for a continent.</p>
-                        
-                        <h4>The Vision</h4>
-                        
-                        <p>When I discovered "Where There Is No Doctor"—a book that saved millions of lives by putting medical knowledge in people's hands—everything clicked. Why hasn't this been digitized, powered by AI, and scaled across Africa?</p>
-                        
-                        <p>So I built Afya. Not as a business opportunity, but as the solution I wish existed when my community needed it. A platform that transforms panic into protocol, confusion into clarity, isolation into connection with life-saving medical guidance.</p>
-                        
-                        <p>Today, Afya helps families across 15+ African countries make critical health decisions in those desperate moments when professional help isn't immediately available. We're not replacing doctors—we're bridging the gap until they can reach one.</p>
-                        
-                        <p class="story-closing"><em>Healthcare shouldn't depend on your location, your language, or your access to doctors. Every family deserves immediate medical guidance when emergencies strike. That's what Afya delivers.</em></p>
-                        
-                        <p class="story-signature">— Louis Nkan 🇳🇬<br>Founder, Afya Health Technologies</p>
-                    </div>
-                    
-                    <div class="founder-contact">
-                        <p><strong>Want to support this mission or discuss partnerships?</strong></p>
-                        <a href="mailto:louisnkan2002@gmail.com" class="btn-secondary">Get in Touch</a>
-                        <p class="contact-details">
-                            📧 louisnkan2002@gmail.com<br>
-                            📧 founder@getafya.com
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
